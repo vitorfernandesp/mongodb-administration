@@ -1,0 +1,58 @@
+use "sample_airbnb";
+
+show collections;
+
+db.listingsAndReviews.stats();
+
+{
+	"ns" : "sample_airbnb.listingsAndReviews",  // Namespace (banco.coleção)
+	"size" : 94362191,                         // Tamanho total dos documentos (bytes)
+	"count" : 5555,                            // Quantidade de documentos na coleção
+	"avgObjSize" : 16986,                      // Tamanho médio dos documentos (bytes)
+	"numOrphanDocs" : 0,                       // Documentos órfãos (apenas em shards)
+	"storageSize" : 53993472,                  // Espaço ocupado no disco (bytes)
+	"freeStorageSize" : 61440,                 // Espaço não utilizado dentro do armazenamento (bytes)
+	"capped" : false,                          // Indica se a coleção é limitada (Capped Collection)
+	"nindexes" : 4,                            // Número total de índices na coleção
+	"indexBuilds" : [ ],                       // Índices em construção
+	"totalIndexSize" : 638976,                 // Tamanho total dos índices (bytes)
+	"indexSizes" : {                           // Tamanho de cada índice individual
+		"_id_" : 221184,
+		"property_type_1_room_type_1_beds_1" : 65536,
+		"name_1" : 253952,
+		"address.location_2dsphere" : 98304
+	},
+	"totalSize" : 54632448,                    // Tamanho total ocupado pela coleção (dados + índices)
+	"scaleFactor" : 1,                         // Fator de escala para apresentação dos valores
+	"ok" : 1,                                  // Status da execução (1 = sucesso)
+	"$clusterTime" : {                         
+		"clusterTime" : Timestamp({ t: 1740525808, i: 2 }),
+		"signature" : {
+			"hash" : BinData(0,"9a4L0CXIoLwSzGeigRINJ3BzSds="),
+			"keyId" : Long("7448677436885041155")
+		}
+	},
+	"operationTime" : Timestamp({ t: 1740525808, i: 2 })  // Momento da execução do comando
+}
+
+
+
+📌 Pontos Importantes e Alertas
+✅ Armazenamento
+
+size vs. storageSize → Se storageSize for muito maior, pode haver fragmentação.
+🚨 Alerta: Espaço desperdiçado? Use compact ou repairDatabase().
+✅ Tamanho e Número de Documentos
+
+count e avgObjSize → Tamanho médio alto pode afetar a performance.
+🚨 Alerta: Consultas lentas? Considere normalizar ou dividir documentos grandes.
+✅ Índices
+
+nindexes e totalIndexSize → Índices muito grandes podem afetar inserções.
+🚨 Alerta: Índices ocupando mais espaço que os dados? Revise com getIndexes().
+✅ Fragmentação
+
+freeStorageSize alto indica espaço desperdiçado.
+🚨 Alerta: Muito espaço livre? Use compact.
+
+
