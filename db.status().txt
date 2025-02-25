@@ -1,0 +1,77 @@
+db.stats();
+
+
+
+{
+	"db" : "sample_airbnb",                 // Nome do banco de dados
+	"collections" : 1,                      // Número total de coleções
+	"views" : 0,                            // Número de views
+	"objects" : 5555,                       // Quantidade total de documentos
+	"avgObjSize" : 16986.89306930693,       // Tamanho médio dos documentos (bytes)
+	"dataSize" : 94362191,                  // Tamanho total dos dados armazenados (bytes)
+	"storageSize" : 53993472,               // Espaço físico ocupado no disco (bytes)
+	"totalFreeStorageSize" : 0,             // Espaço livre ainda não reutilizado (bytes)
+	"numExtents" : 0,                       // (Depreciado) Extents no banco de dados
+	"indexes" : 4,                          // Número total de índices
+	"indexSize" : 638976,                   // Espaço ocupado pelos índices (bytes)
+	"indexFreeStorageSize" : 0,             // Espaço livre em índices, ainda não reutilizado
+	"fileSize" : 0,                         // Tamanho total dos arquivos físicos
+	"nsSizeMB" : 0,                         // Espaço alocado para namespaces (MB)
+	"ok" : 1                                // Status da execução (1 = sucesso)
+}
+
+
+📊 1. Informações Gerais do Banco de Dados
+
+📌 Nome e estrutura do banco.
+
+db → Nome do banco de dados.
+collections → Número de coleções no banco.
+views → Número de views criadas no banco.
+📌 Quando se preocupar?
+🔴 Se houver muitas collections, pode ser necessário otimizar a estrutura do banco.
+
+📦 2. Dados e Tamanho de Armazenamento
+📌 Informações sobre o volume de dados.
+
+objects → Número total de documentos no banco.
+avgObjSize → Tamanho médio de cada documento (em bytes).
+dataSize → Tamanho total ocupado pelos dados (em bytes).
+storageSize → Espaço real ocupado no disco (após compressão).
+totalFreeStorageSize → Espaço de armazenamento livre, mas ainda não reutilizado.
+📌 Quando se preocupar?
+🔴 Se avgObjSize for muito alto, pode indicar documentos grandes que impactam a performance.
+🔴 Se storageSize for muito maior que dataSize, pode ser necessário rodar um compactação ou reindexação.
+
+📂 3. Índices e Performance
+📌 Monitoramento do uso de índices.
+
+indexes → Número total de índices no banco.
+indexSize → Espaço ocupado pelos índices (em bytes).
+indexFreeStorageSize → Espaço livre nos índices, ainda não reutilizado.
+📌 Quando se preocupar?
+🔴 Muitos índices podem aumentar o tempo de escrita e consumir mais memória.
+🔴 Se indexSize for muito grande em relação ao dataSize, pode ser necessário remover índices desnecessários.
+
+📁 4. Armazenamento Físico
+📌 Uso real do disco.
+
+fileSize → Tamanho total dos arquivos físicos no sistema.
+nsSizeMB → Tamanho do namespace, alocado pelo MongoDB.
+📌 Quando se preocupar?
+🔴 Se fileSize crescer rapidamente, pode ser necessário aumentar a capacidade do servidor.
+
+✅ 5. Status da Execução
+📌 Confirmação do comando.
+
+ok → Indica se a consulta foi bem-sucedida (1 = sucesso).
+📌 Quando se preocupar?
+🔴 Se ok for 0, houve um erro ao obter as estatísticas.
+
+📌 Resumo - O que Monitorar Sempre?
+✔ Tamanho do banco (dataSize) para evitar consumo excessivo.
+✔ Uso de armazenamento (storageSize) para otimizar espaço.
+✔ Índices (indexSize) para garantir desempenho eficiente.
+✔ Crescimento de documentos (objects e avgObjSize).
+
+🔎 Com esses pontos, você mantém seu banco MongoDB otimizado! 🚀
