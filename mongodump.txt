@@ -24,4 +24,6 @@ mongorestore --db=Vendas C:\Curso\Vendas
 
 
 
-O mongodump é uma ferramenta simples e flexível para realizar backups de bancos de dados MongoDB, permitindo cópias completas ou de coleções específicas, com fácil restauração através do mongorestore. No entanto, pode causar interrupções em serviços críticos, exige backups completos mesmo quando apenas parte dos dados é necessária, não suporta backups incrementais e depende do acesso contínuo ao banco de dados. Portanto, é mais adequado para cenários onde a simplicidade é prioritária, mas pode não ser ideal em ambientes que necessitam de alta disponibilidade.
+O mongodump é uma ferramenta simples e flexível para realizar backups de bancos de dados MongoDB, permitindo cópias completas ou de coleções específicas, com fácil restauração através do mongorestore. 
+No entanto, pode causar interrupções em serviços críticos, exige backups completos mesmo quando apenas parte dos dados é necessária, não suporta backups incrementais e depende do acesso contínuo ao banco de dados. 
+Portanto, é mais adequado para cenários onde a simplicidade é prioritária, mas pode não ser ideal em ambientes que necessitam de alta disponibilidade.
