@@ -1,4 +1,4 @@
-# 🌱 MongoDB - Consultas do dia a dia
+# 🌱 MongoDB 
 
 Bem-vindo ao repositório de consultas que utilizo diariamente como DBA!
 
