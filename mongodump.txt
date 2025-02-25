@@ -1,0 +1,27 @@
+//backup completo do banco de dados "Vendas". Os dados serão salvos na pasta padrão dos utilitários
+mongodump --db=Vendas
+
+
+//backup apenas da coleção "Pedidos" dentro do banco de dados "Vendas"
+mongodump --collection=Pedidos --db=Vendas
+
+
+// backup da coleção "Pedidos" e salva os arquivos no diretório "C:\Curso"
+mongodump --collection=Pedidos --db=Vendas --out=C:\Curso
+
+
+// backup de todas as coleções do banco de dados "Vendas", exceto a coleção "Pedidos", e salvando no diretório "C:\Curso"
+mongodump --db=Vendas --excludeCollection=Pedidos --out=C:\Curso
+
+
+// backup do banco de dados "Vendas" e compacta os arquivos no formato GZIP, salvando-os no diretório "C:\Curso\compactado"
+mongodump --gzip --db=Vendas --out=C:\Curso\compactado
+
+
+//restaura o banco de dados "Vendas" utilizando os arquivos que foram gerados pelo mongodump, que estão localizados no diretório "C:\Curso\Vendas". Ele irá restaurar todas as coleções que estavam presentes no backup.
+mongorestore --db=Vendas C:\Curso\Vendas
+
+
+
+
+O mongodump é uma ferramenta simples e flexível para realizar backups de bancos de dados MongoDB, permitindo cópias completas ou de coleções específicas, com fácil restauração através do mongorestore. No entanto, pode causar interrupções em serviços críticos, exige backups completos mesmo quando apenas parte dos dados é necessária, não suporta backups incrementais e depende do acesso contínuo ao banco de dados. Portanto, é mais adequado para cenários onde a simplicidade é prioritária, mas pode não ser ideal em ambientes que necessitam de alta disponibilidade.
