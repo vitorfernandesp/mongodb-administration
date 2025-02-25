@@ -1,0 +1,123 @@
+db.serverStatus();
+
+🔍 Pontos Importantes
+
+"host": Nome do host e porta do MongoDB.
+"version": Versão do MongoDB em execução.
+"process": Tipo de processo (mongod no caso).
+"uptime": Tempo em segundos que o servidor está ativo.
+
+Conexões
+
+"connections.current": Número de conexões ativas.
+"connections.available": Número de conexões ainda disponíveis.
+"connections.totalCreated": Total de conexões criadas desde a inicialização.
+
+Rede
+
+"network.bytesIn": Total de bytes recebidos.
+"network.bytesOut": Total de bytes enviados.
+"network.numRequests": Número total de requisições.
+
+Operações
+
+"opcounters.insert": Quantidade de operações insert.
+"opcounters.query": Consultas (find()).
+"opcounters.update": Operações de atualização.
+"opcounters.command": Comandos executados (exemplo: db.stats()).
+
+Replica Set 
+
+"repl.setName": Nome do replica set.
+"repl.isWritablePrimary": Indica se o nó é primário (true ou false).
+"repl.primary": Nome do servidor primário atual.
+"repl.electionId": Identificação da última eleição de primário.
+
+Armazenamento
+
+"storageEngine.name": Motor de armazenamento em uso (wiredTiger).
+"storageEngine.readOnly": Se o banco está em modo somente leitura.
+"storageEngine.persistent": Se os dados são persistentes após reinício.
+
+Latência de Operações
+
+"opLatencies.reads.latency": Tempo de latência em operações de leitura.
+"opLatencies.writes.latency": Tempo de latência em operações de escrita.
+"opLatencies.commands.latency": Latência média de comandos executados.
+
+Versão do Atlas (se aplicável)
+
+"atlasVersion.version": Versão do MongoDB Atlas.
+"atlasVersion.gitVersion": Identificador do código-fonte da versão.
+
+
+
+------------------------------------------------------Exemplo----------------------------------------------------
+
+{
+	"host": "examdba-shard-00-01.9a2uh.mongodb.net:27017",  // 🔹 Nome do host e porta
+	"version": "8.0.4",  // 🔹 Versão do MongoDB
+	"process": "mongod",
+	"uptime": 1231822,  // ⏳ Tempo de atividade do servidor (segundos)
+
+	// 🟢 1. Conexões e Recursos 🔄
+	"connections": {
+		"current": 7,  // 🔹 Conexões ativas
+		"available": 493,  // 🔹 Conexões disponíveis
+		"totalCreated": 22  // 🔹 Total de conexões criadas desde o início
+	},
+
+	// 🟢 2. Uso de Rede 🌐
+	"network": {
+		"bytesIn": 91167,  // 🔹 Total de bytes recebidos
+		"bytesOut": 2664608,  // 🔹 Total de bytes enviados
+		"numRequests": 341  // 🔹 Número total de requisições
+	},
+
+	// 🟢 3. Operações no Banco de Dados ⚙️
+	"opcounters": {
+		"insert": 0,  // 🔹 Total de operações de inserção
+		"query": 23,  // 🔹 Total de consultas (`find()`)
+		"update": 0,  // 🔹 Total de operações de atualização
+		"delete": 0,
+		"command": 306  // 🔹 Total de comandos executados (ex: `db.stats()`)
+	},
+
+	// 🟢 4. Informações sobre Replicação 🔁
+	"repl": {
+		"setName": "atlas-1f81uk-shard-0",  // 🔹 Nome do replica set
+		"isWritablePrimary": true,  // 🔹 Indica se é o nó primário
+		"primary": "examdba-shard-00-01.9a2uh.mongodb.net:27017",  // 🔹 Nó primário atual
+		"electionId": "7fffffff0000000000000021"  // 🔹 ID da última eleição
+	},
+
+	// 🟢 5. Motor de Armazenamento 🗄️
+	"storageEngine": {
+		"name": "wiredTiger",  // 🔹 Motor de armazenamento utilizado
+		"readOnly": false,  // 🔹 Indica se o banco está em modo somente leitura
+		"persistent": true  // 🔹 Indica se os dados são persistentes após reinício
+	},
+
+	// 🟢 6. Latência de Operações ⏳
+	"opLatencies": {
+		"reads": {
+			"latency": 273284,  // 🔹 Latência das leituras
+			"ops": 23
+		},
+		"writes": {
+			"latency": 0,  // 🔹 Latência das escritas
+			"ops": 0
+		},
+		"commands": {
+			"latency": 760842318,  // 🔹 Latência média dos comandos
+			"ops": 303
+		}
+	},
+
+	// 🟢 7. Versão do MongoDB Atlas (se aplicável) 🚀
+	"atlasVersion": {
+		"version": "20250219.0.0.1739396131",  // 🔹 Versão do MongoDB Atlas
+		"gitVersion": "16ba74e8a60a548176df55372595d823e346d141"
+	}
+}
+
