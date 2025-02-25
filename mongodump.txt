@@ -1,16 +1,16 @@
-//backup completo do banco de dados "Vendas". Os dados serão salvos na pasta padrão dos utilitários
+//backup de um banco de dados
 mongodump --db=Vendas
 
 
-//backup apenas da coleção "Pedidos" dentro do banco de dados "Vendas"
+//backup apenas da coleção do banco de dados
 mongodump --collection=Pedidos --db=Vendas
 
 
-// backup da coleção "Pedidos" e salva os arquivos no diretório "C:\Curso"
+// backup da coleção e salva os arquivos no diretório 
 mongodump --collection=Pedidos --db=Vendas --out=C:\Curso
 
 
-// backup de todas as coleções do banco de dados "Vendas", exceto a coleção "Pedidos", e salvando no diretório "C:\Curso"
+// backup de todas as coleções do banco exceto a coleção, e salvando no diretório 
 mongodump --db=Vendas --excludeCollection=Pedidos --out=C:\Curso
 
 
@@ -21,6 +21,9 @@ mongodump --gzip --db=Vendas --out=C:\Curso\compactado
 //restaura o banco de dados "Vendas" utilizando os arquivos que foram gerados pelo mongodump, que estão localizados no diretório "C:\Curso\Vendas". Ele irá restaurar todas as coleções que estavam presentes no backup.
 mongorestore --db=Vendas C:\Curso\Vendas
 
+
+//Restaurar um banco de dados com arquivos compactados
+mongorestore --gzip  --nsInclude="Vendas.*" C:\Curso\backup\compactada
 
 
 
