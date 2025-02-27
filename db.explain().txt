@@ -1,0 +1,110 @@
+use "sample_airbnb";
+
+db.listingsAndReviews.find({"minimum_nights" : "2"}).explain("allPlansExecution");
+
+
+{
+	"explainVersion": "1",  // Versão do explain()
+	"queryPlanner": {
+		"namespace": "sample_airbnb.listingsAndReviews",  // Nome do banco e coleção consultada
+		"parsedQuery": {
+			"minimum_nights": { "$eq": "2" }  // Filtro aplicado na consulta
+		},
+		"indexFilterSet": false,  // Indica se filtros de índice foram aplicados
+		"planCacheShapeHash": "FC0C4F37",  // Identificador do plano de consulta
+		"planCacheKey": "20FC2CBB",  // Chave única para o cache do plano
+		"optimizationTimeMillis": 0,  // Tempo gasto na otimização do plano
+		"maxIndexedOrSolutionsReached": false,  
+		"maxIndexedAndSolutionsReached": false,  
+		"maxScansToExplodeReached": false,  
+		"prunedSimilarIndexes": false,  
+		"winningPlan": {  // Plano vencedor escolhido pelo otimizador
+			"isCached": false,  // Indica se o plano está em cache
+			"stage": "COLLSCAN",  // Etapa principal (COLLSCAN indica varredura completa)
+			"filter": { "minimum_nights": { "$eq": "2" } },  // Filtro aplicado
+			"direction": "forward"  // Direção da leitura (progressão natural)
+		},
+		"rejectedPlans": []  // Lista de planos descartados pelo otimizador
+	},
+	"executionStats": {
+		"executionSuccess": true,  // Indica se a execução foi bem-sucedida
+		"nReturned": 1505,  // Número de documentos retornados
+		"executionTimeMillis": 8,  // Tempo total de execução da consulta
+		"totalKeysExamined": 0,  // Total de chaves indexadas examinadas
+		"totalDocsExamined": 5555,  // Total de documentos varridos na coleção
+		"executionStages": {  // Estágios da execução da consulta
+			"isCached": false,  
+			"stage": "COLLSCAN",  // Indica que a consulta fez varredura total
+			"filter": { "minimum_nights": { "$eq": "2" } },  
+			"nReturned": 1505,  
+			"executionTimeMillisEstimate": 5,  // Estimativa do tempo de execução
+			"works": 5556,  // Quantidade de operações realizadas
+			"advanced": 1505,  
+			"needTime": 4050,  // Quantidade de vezes que a consulta esperou por dados
+			"needYield": 0,  
+			"saveState": 0,  
+			"restoreState": 0,  
+			"isEOF": 1,  // Indica se a consulta chegou ao fim
+			"direction": "forward",  
+			"docsExamined": 5555  // Quantidade de documentos analisados
+		},
+		"allPlansExecution": []  // Lista com estatísticas de execução de outros planos testados
+	},
+	"queryShapeHash": "06084BB64F7103C4487E01085C69AF518E04F41E0EF618DAA2B406B3EC95A0DF",  
+	"command": {  // Comando executado
+		"find": "listingsAndReviews",  // Tipo de operação (busca)
+		"filter": { "minimum_nights": "2" },  // Critério de filtragem
+		"batchSize": 1000,  // Número de documentos retornados por lote
+		"projection": {},  
+		"$db": "sample_airbnb"  // Nome do banco de dados
+	},
+	"serverInfo": {  // Informações do servidor MongoDB
+		"host": "examdba-shard-00-01.9a2uh.mongodb.net",  
+		"port": 27017,  // Porta do servidor
+		"version": "8.0.4",  // Versão do MongoDB
+		"gitVersion": "bc35ab4305d9920d9d0491c1c9ef9b72383d31f9"
+	},
+	"serverParameters": {  // Parâmetros internos do servidor
+		"internalQueryFacetBufferSizeBytes": 104857600,  
+		"internalQueryFacetMaxOutputDocSizeBytes": 104857600,  
+		"internalLookupStageIntermediateDocumentMaxSizeBytes": 16793600,  
+		"internalDocumentSourceGroupMaxMemoryBytes": 104857600,  
+	},
+	"ok": 1,  // Indica que a operação foi bem-sucedida
+	"$clusterTime": {  // Informações de sincronização do cluster
+		"clusterTime": Timestamp({ "t": 1740683360, "i": 5 }),  
+		"signature": {  
+			"hash": BinData(0, "HVzSWWW2J4d3FXd10+aBk8ZHU2o="),  
+			"keyId": Long("7448677436885041155")  
+		}  
+	},
+	"operationTime": Timestamp({ "t": 1740683360, "i": 5 })  // Timestamp da operação
+}
+
+
+
+Pontos Importantes
+
+queryPlanner:
+namespace: Coleção consultada.
+parsedQuery: Filtros aplicados na consulta.
+winningPlan: Mostra se o MongoDB usou COLLSCAN (varredura total) ou IXSCAN (índice).
+rejectedPlans: Planos de consulta descartados.
+
+executionStats:
+nReturned: Número de documentos retornados.
+executionTimeMillis: Tempo total da consulta.
+totalKeysExamined: Quantidade de chaves indexadas. Se 0 e totalDocsExamined alto, pode faltar índice.
+totalDocsExamined: Número de documentos verificados. Se alto, a consulta pode estar ineficiente.
+executionStages.stage: Se for COLLSCAN, indica que a consulta fez varredura completa da coleção.
+
+command:
+filter: Critério de busca utilizado.
+
+serverInfo:
+version: Versão do MongoDB usada.
+
+Se winningPlan.stage for "COLLSCAN" → Adicionar índices para evitar varredura total.
+Se executionTimeMillis for alto → Otimizar consulta ou criar índice.
+Se totalDocsExamined for muito maior que nReturned → A consulta pode estar verificando muitos documentos desnecessariamente.
+
