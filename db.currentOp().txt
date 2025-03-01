@@ -1,0 +1,110 @@
+db.currentOp();
+
+//consultas com alta leitura no disco em um database
+db.adminCommand({
+ "currentOp": true,
+ "ns": "sample_airbnb\./",
+ "numYields" : {"$gte": 100}
+})
+
+or 
+
+db.currentOp({
+  "ns": "sample_airbnb\./",
+  "numYields": { "$gte": 100 }
+});
+
+
+// consultas sem indice
+db.adminCommand({
+ "currentOp": true,
+ "op" : "query",
+ "planSummary": "COLLSCAN"
+})
+
+or
+
+db.currentOp().inprog.filter(op => 
+    op.op === "query" && op.planSummary === "COLLSCAN"
+);
+
+
+
+// operações de gravação que estão aguardando um bloqueio
+db.currentOp(
+   {
+     "waitingForLock" : true,
+     $or: [
+        { "op" : { "$in" : [ "insert", "update", "remove" ] } },
+        { "command.findandmodify": { $exists: true } }
+    ]
+   }
+)
+
+or
+
+db.adminCommand({
+ "currentOp": true,
+ "waitingForLock" : true,
+ "$or": [
+    { "op" : { "$in" : [ "insert", "update", "remove" ] } },
+    { "query.findandmodify": { "$exists": true } }
+  ]
+})
+
+
+
+
+// sessões ativas com duração acima de 1s e retirando sessões do oplog
+db.currentOp({"active" : true,"secs_running" : { "$gt" : 1 },"ns" : {$ne : "local.oplog.rs"}})
+
+// filtro lentidão por ms
+db.currentOp({ "active": true, "microsecs_running": {$gt: 1000}})
+
+or
+
+db.adminCommand({
+ "currentOp": true,
+ "microsecs_running" : {"$gte" : 300000}
+})
+
+// usar o $ownOps' para visualizar suas próprias operações
+db.currentOp({"$ownOps" : true}) or db.adminCommand({"currentOp": 1, "$ownOps" : true})
+
+
+
+// conexões ativas pelo currentOp
+var c=1;
+db.currentOp().inprog.forEach(
+function(doc){c=c+1})
+print("The total number of active connections are: "+c)
+
+
+// conexões ativas e inativas
+var active=1; var inactive=1;
+db.currentOp(true).inprog.forEach( function(doc){  if(doc.active){    active=active+1 }  else if(!doc.active){    inactive=inactive+1 }  } )
+print("The number of active connections are: "+active+"nThe number of inactive connections are: "+inactive)
+
+
+
+//Operações ativas em um banco de dados específico
+db.currentOp(
+   {
+     "active" : true,
+     "secs_running" : { "$gt" : 3 },
+     "ns" : /^db1\./
+   }
+)
+
+
+//Operações de indexação ativas
+db.adminCommand(
+    {
+      currentOp: true,
+      $or: [
+        { op: "command", "command.createIndexes": { $exists: true }  },
+        { op: "command", "command.$truncated": /^\{ createIndexes/  },
+        { op: "none", "msg" : /^Index Build/ }
+      ]
+    }
+)
