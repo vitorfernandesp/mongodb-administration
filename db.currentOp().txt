@@ -1,13 +1,27 @@
 db.currentOp();
 
+
+//sessões no banco
+db.currentOp({ "ns": "nomeDoBanco.nomeDaColeção" });
+
+
+
+// Operações em execução por mais de 60 segundos
+db.currentOp({ "secs_running": { "$gt": 60 } }); 
+
+
+
+//matar sessao
+db.killOp(opid);
+
+
+
 //consultas com alta leitura no disco em um database
 db.adminCommand({
  "currentOp": true,
  "ns": "sample_airbnb\./",
  "numYields" : {"$gte": 100}
-})
-
-or 
+})     or
 
 db.currentOp({
   "ns": "sample_airbnb\./",
@@ -15,14 +29,13 @@ db.currentOp({
 });
 
 
+
 // consultas sem indice
 db.adminCommand({
  "currentOp": true,
  "op" : "query",
  "planSummary": "COLLSCAN"
-})
-
-or
+})	or
 
 db.currentOp().inprog.filter(op => 
     op.op === "query" && op.planSummary === "COLLSCAN"
@@ -39,9 +52,7 @@ db.currentOp(
         { "command.findandmodify": { $exists: true } }
     ]
    }
-)
-
-or
+)	or
 
 db.adminCommand({
  "currentOp": true,
@@ -54,19 +65,21 @@ db.adminCommand({
 
 
 
-
 // sessões ativas com duração acima de 1s e retirando sessões do oplog
 db.currentOp({"active" : true,"secs_running" : { "$gt" : 1 },"ns" : {$ne : "local.oplog.rs"}})
 
+
+
 // filtro lentidão por ms
 db.currentOp({ "active": true, "microsecs_running": {$gt: 1000}})
-
 or
 
 db.adminCommand({
  "currentOp": true,
  "microsecs_running" : {"$gte" : 300000}
 })
+
+
 
 // usar o $ownOps' para visualizar suas próprias operações
 db.currentOp({"$ownOps" : true}) or db.adminCommand({"currentOp": 1, "$ownOps" : true})
@@ -78,6 +91,7 @@ var c=1;
 db.currentOp().inprog.forEach(
 function(doc){c=c+1})
 print("The total number of active connections are: "+c)
+
 
 
 // conexões ativas e inativas
@@ -95,6 +109,7 @@ db.currentOp(
      "ns" : /^db1\./
    }
 )
+
 
 
 //Operações de indexação ativas
