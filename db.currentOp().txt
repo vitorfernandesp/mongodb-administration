@@ -15,6 +15,9 @@ db.currentOp({ "secs_running": { "$gt": 60 } });
 db.killOp(opid);
 
 
+//operações que estão consumindo CPU por mais de 5 segundos
+db.currentOp({ "secs_running": { "$gt": 5 }, "cpu": { "$exists": true } })
+
 
 //consultas com alta leitura no disco em um database
 db.adminCommand({
